@@ -85,9 +85,9 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBoxIn;
-        private System.Windows.Forms.TextBox textBoxOut;
-        private System.Windows.Forms.Button buttonRun;
+        public System.Windows.Forms.TextBox textBoxIn;
+        public System.Windows.Forms.Button buttonRun;
+        public System.Windows.Forms.TextBox textBoxOut;
     }
 }
 
