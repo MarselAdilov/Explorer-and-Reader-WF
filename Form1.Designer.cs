@@ -40,7 +40,7 @@
             this.textBoxIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxIn.Location = new System.Drawing.Point(33, 621);
             this.textBoxIn.Name = "textBoxIn";
-            this.textBoxIn.Size = new System.Drawing.Size(756, 39);
+            this.textBoxIn.Size = new System.Drawing.Size(950, 39);
             this.textBoxIn.TabIndex = 0;
             // 
             // textBoxOut
@@ -54,13 +54,13 @@
             this.textBoxOut.Name = "textBoxOut";
             this.textBoxOut.ReadOnly = true;
             this.textBoxOut.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxOut.Size = new System.Drawing.Size(1076, 558);
+            this.textBoxOut.Size = new System.Drawing.Size(1270, 558);
             this.textBoxOut.TabIndex = 1;
             // 
             // buttonRun
             // 
             this.buttonRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonRun.Location = new System.Drawing.Point(810, 620);
+            this.buttonRun.Location = new System.Drawing.Point(1004, 620);
             this.buttonRun.Name = "buttonRun";
             this.buttonRun.Size = new System.Drawing.Size(134, 40);
             this.buttonRun.TabIndex = 2;
@@ -72,7 +72,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1145, 706);
+            this.ClientSize = new System.Drawing.Size(1339, 706);
             this.Controls.Add(this.buttonRun);
             this.Controls.Add(this.textBoxOut);
             this.Controls.Add(this.textBoxIn);

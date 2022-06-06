@@ -1,5 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+using System.Globalization;
+using System.Xml.Linq;
+using System.Xml;
 
 namespace WindowsFormsApp2
 {
@@ -16,12 +24,8 @@ namespace WindowsFormsApp2
         public Form1()
         {
             InitializeComponent();
-        }
+            Program.Intro(textBoxOut);
 
-        private void Request(string command) //обрабатывает введенную команду
-        {
-            
-            textBoxOut.Text = command;
         }
 
         private void buttonRun_Click(object sender, EventArgs e)
@@ -29,7 +33,7 @@ namespace WindowsFormsApp2
             command = textBoxIn.Text;
             textBoxOut.Clear();
             textBoxIn.Clear();
-            Request(command); 
+            Program.Request(command, textBoxOut); 
         }
     }
 }
