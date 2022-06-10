@@ -28,7 +28,6 @@ namespace WindowsFormsApp2
         private static string[] dirList; // хранит список файлов в текущем каталоге
         private static int dirIndex = 0; // кол-во файлов в текущем каталоге
         private static string command; // хранит прописанную с командной строки команду
-        private static bool status = true; // пока true, цикл обработки запросов работает
         public static bool pause = false; //индикатор паузы
 
         [STAThread]
@@ -44,7 +43,6 @@ namespace WindowsFormsApp2
             textBoxOut.Text += ("| · Открыть файл из списка\t\t| <номер файла>\t\t\t|\r\n");
             textBoxOut.Text += ("| · Открыть путь\t\t\t| -open [path]\t\t\t|\r\n");
             textBoxOut.Text += ("| · Открыть файл с кодировкой\t| -open [path / number] [page_code]\t|\r\n");
-            textBoxOut.Text += ("| · Выйти из программы\t\t| -exit\t\t\t\t|\r\n");
             textBoxOut.Text += ("| · Перейти к текущему каталогу\t| -cur\t\t\t\t|\r\n");
             textBoxOut.Text += ("| · Перейти к корневой папке\t| -top\t\t\t\t|\r\n");
             textBoxOut.Text += ("+-------------------------------------------------------+--------------------------------------------------------+\r\n");
@@ -61,7 +59,7 @@ namespace WindowsFormsApp2
             
             dirList = new string[1000];
             textBoxOut.Text += ($"\r\n№\t{"Имя файла",-50}\tРазмер (байт)");
-            if (path != @"C:\") textBoxOut.Text += ($"\r\n0.\tНазад\r\n");
+            if (path != @"C:\" && path != @"c:\" && path != @"C:" && path != @"c:") textBoxOut.Text += ($"\r\n0.\tНазад\r\n");
 
             foreach (var d in dir)
             {
@@ -92,12 +90,7 @@ namespace WindowsFormsApp2
 
                 if (symbol == '-') //обрабока команд
                 {
-                    if (command.StartsWith("-exit"))
-                    {
-                        status = false;
-                        return;
-                    }
-                    else if (command.StartsWith("-open"))
+                    if (command.StartsWith("-open"))
                     {
                         string[] tmp = command.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         if (tmp.Length > 2) //если задана кодировка
@@ -131,6 +124,7 @@ namespace WindowsFormsApp2
                     else
                     {
                         textBoxOut.Text += ("\r\nТакой команды не существует. Попробуйте снова.");
+                        FileList(PathLinker(pathIndex), textBoxOut);
                         return;
                     }
                 }
@@ -144,7 +138,7 @@ namespace WindowsFormsApp2
                             Open(textBoxOut, num - 1);
                             return;
                         }
-                        else if (num == 0 && PathLinker(pathIndex) != @"C:\") // "назад"
+                        else if (num == 0 && PathLinker(pathIndex) != @"C:\" && PathLinker(pathIndex) != @"c:\" && PathLinker(pathIndex) != @"C:" && PathLinker(pathIndex) != @"c:") // "назад"
                         {
                             pathIndex--;
                             FileList(PathLinker(pathIndex), textBoxOut);
@@ -152,6 +146,7 @@ namespace WindowsFormsApp2
                         else
                         {
                             textBoxOut.Text += ("\r\nОшибка. Попробуйте снова.");
+                            FileList(PathLinker(pathIndex), textBoxOut);
                             return;
                         }
 
@@ -159,6 +154,7 @@ namespace WindowsFormsApp2
                     catch
                     {
                         textBoxOut.Text += ("\r\nОшибка. Попробуйте снова.");
+                        FileList(PathLinker(pathIndex), textBoxOut);
                         return;
                     }
                 }
@@ -166,6 +162,7 @@ namespace WindowsFormsApp2
             catch
             {
                 textBoxOut.Text += ("\r\nОшибка. Попробуйте снова.");
+                FileList(PathLinker(pathIndex), textBoxOut);
                 return;
             }
         }
