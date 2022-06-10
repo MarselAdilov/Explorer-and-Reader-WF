@@ -44,6 +44,7 @@ namespace WindowsFormsApp2
             textBoxOut.Text += ("| · Открыть файл с кодировкой\t| -open [path / number] [page_code]\t|\r\n");
             textBoxOut.Text += ("| · Перейти к текущему каталогу\t| -cur\t\t\t\t|\r\n");
             textBoxOut.Text += ("| · Перейти к корневой папке\t| -top\t\t\t\t|\r\n");
+            textBoxOut.Text += ("| · Справка\t\t\t| -info\t\t\t\t|\r\n");
             textBoxOut.Text += ("+-------------------------------------------------------+--------------------------------------------------------+\r\n");
             FileList(PathLinker(pathIndex), textBoxOut);
         }
@@ -118,6 +119,11 @@ namespace WindowsFormsApp2
                     else if (command.StartsWith("-cur"))
                     {
                         Open(textBoxOut, -1, Directory.GetCurrentDirectory());
+                        return;
+                    }
+                    else if (command.StartsWith("-info"))
+                    {
+                        Intro(textBoxOut);
                         return;
                     }
                     else

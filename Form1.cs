@@ -63,5 +63,13 @@ namespace WindowsFormsApp2
             textBoxIn.Clear();
             Program.Request(command, textBoxOut);
         }
+
+        private void справкаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            command = "-info";
+            textBoxOut.Clear();
+            textBoxIn.Clear();
+            Program.Request(command, textBoxOut);
+        }
     }
 }
