@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.textBoxIn = new System.Windows.Forms.TextBox();
             this.textBoxOut = new System.Windows.Forms.TextBox();
             this.buttonRun = new System.Windows.Forms.Button();
@@ -77,8 +78,9 @@
             this.Controls.Add(this.buttonRun);
             this.Controls.Add(this.textBoxOut);
             this.Controls.Add(this.textBoxIn);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Проводник";
             this.ResumeLayout(false);
             this.PerformLayout();
 
