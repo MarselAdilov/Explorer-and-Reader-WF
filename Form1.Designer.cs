@@ -42,6 +42,7 @@
             this.textBoxIn.Name = "textBoxIn";
             this.textBoxIn.Size = new System.Drawing.Size(950, 39);
             this.textBoxIn.TabIndex = 0;
+            this.textBoxIn.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxIn_KeyPress);
             // 
             // textBoxOut
             // 

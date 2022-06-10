@@ -27,7 +27,6 @@ namespace WindowsFormsApp2
         private static int pathIndexBackup = 0; // копия pathIndex на случай ошибки, дающая возможность отката
         private static string[] dirList; // хранит список файлов в текущем каталоге
         private static int dirIndex = 0; // кол-во файлов в текущем каталоге
-        private static string command; // хранит прописанную с командной строки команду
         public static bool pause = false; //индикатор паузы
 
         [STAThread]

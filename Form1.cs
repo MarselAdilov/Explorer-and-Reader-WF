@@ -14,13 +14,7 @@ namespace WindowsFormsApp2
 {
     public partial class Form1 : Form
     {
-        private static string[] pathBackup = new string[1000]; // копия path на случай ошибки, дающая возможность отката
-        private static int pathIndex = 0; // хранит кол-во объектов в пути
-        private static int pathIndexBackup = 0; // копия pathIndex на случай ошибки, дающая возможность отката
-        private static string[] dirList; // хранит список файлов в текущем каталоге
-        private static int dirIndex = 0; // кол-во файлов в текущем каталоге
         private static string command; // хранит прописанную с командной строки команду
-        private static bool status = true; // пока true, цикл обработки запросов работает
 
 
         public Form1()
@@ -36,6 +30,14 @@ namespace WindowsFormsApp2
             textBoxOut.Clear();
             textBoxIn.Clear();
             Program.Request(command, textBoxOut);
+        }
+
+        private void textBoxIn_KeyPress(object sender, KeyPressEventArgs e) // обработка нажатия клавиши Enter для исполнения прописанной команды
+        {
+            if (e.KeyChar == Convert.ToChar(Keys.Return))
+            {
+                buttonRun_Click(sender, e);
+            }
         }
     }
 }
