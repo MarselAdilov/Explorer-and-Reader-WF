@@ -24,7 +24,7 @@ namespace WindowsFormsApp2
             Program.Intro(textBoxOut);
         }
 
-        private void buttonRun_Click(object sender, EventArgs e)
+        private void buttonRun_Click(object sender, EventArgs e) // Выполнить
         {
             command = textBoxIn.Text;
             textBoxOut.Clear();
@@ -38,6 +38,30 @@ namespace WindowsFormsApp2
             {
                 buttonRun_Click(sender, e);
             }
+        }
+
+        private void buttonBack_Click(object sender, EventArgs e) // Назад
+        {
+            command = "0";
+            textBoxOut.Clear();
+            textBoxIn.Clear();
+            Program.Request(command, textBoxOut);
+        }
+
+        private void buttonTop_Click(object sender, EventArgs e) // Корневой каталог
+        {
+            command = "-top";
+            textBoxOut.Clear();
+            textBoxIn.Clear();
+            Program.Request(command, textBoxOut);
+        }
+
+        private void buttonCur_Click(object sender, EventArgs e) // Текущий каталог
+        {
+            command = "-cur";
+            textBoxOut.Clear();
+            textBoxIn.Clear();
+            Program.Request(command, textBoxOut);
         }
     }
 }
