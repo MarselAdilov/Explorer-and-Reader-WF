@@ -17,7 +17,7 @@ namespace WindowsFormsApp2
         private static string command; // хранит прописанную с командной строки команду
 
         private string FileName { get; set; } = string.Empty;
-        private string encodingPage = string.Empty;
+        public static string encodingPage = string.Empty;
 
         public Form1()
         {
@@ -32,6 +32,7 @@ namespace WindowsFormsApp2
             command = textBoxIn.Text;
             textBoxOut.Clear();
             textBoxIn.Clear();
+            encodingPage = (string)code.Items[code.SelectedIndex];
             Program.Request(command, textBoxOut);
         }
 

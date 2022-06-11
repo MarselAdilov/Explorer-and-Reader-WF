@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;
 using System.Xml.Linq;
@@ -27,7 +24,6 @@ namespace WindowsFormsApp2
         private static int pathIndexBackup = 0; // копия pathIndex на случай ошибки, дающая возможность отката
         private static string[] dirList; // хранит список файлов в текущем каталоге
         private static int dirIndex = 0; // кол-во файлов в текущем каталоге
-        public static bool pause = false; //индикатор паузы
 
         public static void Intro(TextBox textBoxOut) //вступительное сообщение
         {
@@ -96,17 +92,19 @@ namespace WindowsFormsApp2
                         {
                             try //если задан файл числом
                             {
-                                Open(textBoxOut, Convert.ToInt32(tmp[1]) - 1, null, Convert.ToInt32(tmp[2]));
+                                Form1.encodingPage = tmp[2];
+                                Open(textBoxOut, Convert.ToInt32(tmp[1]) - 1, null, Form1.encodingPage);
                             }
                             catch //если задан путь
                             {
-                                Open(textBoxOut , - 1, tmp[1], Convert.ToInt32(tmp[2]));
+                                Form1.encodingPage = tmp[2];
+                                Open(textBoxOut , - 1, tmp[1], Form1.encodingPage);
                             }
                             return;
                         }
                         else //если кодировка не задана
                         {
-                            Open(textBoxOut, - 1, tmp[1]);
+                            Open(textBoxOut, - 1, tmp[1], Form1.encodingPage);
                             return;
                         }
                     }
@@ -139,7 +137,7 @@ namespace WindowsFormsApp2
                         int num = Convert.ToInt32(command);
                         if (num <= dirIndex && num > 0)
                         {
-                            Open(textBoxOut, num - 1);
+                            Open(textBoxOut, num - 1, null, Form1.encodingPage);
                             return;
                         }
                         else if (num == 0 && PathLinker(pathIndex) != @"C:\" && PathLinker(pathIndex) != @"c:\" && PathLinker(pathIndex) != @"C:" && PathLinker(pathIndex) != @"c:") // "назад"
@@ -171,7 +169,7 @@ namespace WindowsFormsApp2
             }
         }
 
-        private static void Open(TextBox textBoxOut, int num = -1, string p = @"C:", int codePage = 65001) //Открывает файлы и папки
+        private static void Open(TextBox textBoxOut, int num = -1, string p = @"C:", string codePage = "65001") //Открывает файлы и папки
         {
             if (num != -1) //открытие файла по числу
             {
@@ -259,7 +257,7 @@ namespace WindowsFormsApp2
             }
         }
 
-        private static void OpenFile(TextBox textBoxOut, int codePage = 65001) //Выводит текстовые файлы на консоль
+        private static void OpenFile(TextBox textBoxOut, string codePage = "65001") //Выводит текстовые файлы на консоль
         {
             string fName = path[pathIndex];
             string[] fFormat = fName.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
@@ -528,10 +526,20 @@ namespace WindowsFormsApp2
                         break;
 
                     default:
-                        StreamReader fStr = new StreamReader(filePath, Encoding.GetEncoding(codePage));
-                        string s;
-                        while ((s = fStr.ReadLine()) != null) textBoxOut.Text += ($"\r\n{s}");
-                        fStr.Close();
+                        try
+                        {
+                            StreamReader fStr = new StreamReader(filePath, Encoding.GetEncoding(codePage));
+                            string s;
+                            while ((s = fStr.ReadLine()) != null) textBoxOut.Text += ($"\r\n{s}");
+                            fStr.Close();
+                        }
+                        catch
+                        {
+                            StreamReader fStr = new StreamReader(filePath, Encoding.GetEncoding(Convert.ToInt32(codePage)));
+                            string s;
+                            while ((s = fStr.ReadLine()) != null) textBoxOut.Text += ($"\r\n{s}");
+                            fStr.Close();
+                        }
                         break;
                 }
             }
