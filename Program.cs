@@ -29,8 +29,6 @@ namespace WindowsFormsApp2
         private static int dirIndex = 0; // кол-во файлов в текущем каталоге
         public static bool pause = false; //индикатор паузы
 
-        [STAThread]
-
         public static void Intro(TextBox textBoxOut) //вступительное сообщение
         {
 
@@ -84,6 +82,7 @@ namespace WindowsFormsApp2
 
         public static void Request(string command, TextBox textBoxOut) //обрабатывает введенную команду
         {
+            textBoxOut.ReadOnly = true;
             try
             {
                 char symbol = command[0];
@@ -562,7 +561,7 @@ namespace WindowsFormsApp2
             }
         }
 
-
+        [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
