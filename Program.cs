@@ -36,6 +36,8 @@ namespace WindowsFormsApp2
             textBoxOut.Text += ("| · Открыть файл из списка\t\t| <номер файла>\t\t\t|\r\n");
             textBoxOut.Text += ("| · Открыть путь\t\t\t| -open [path]\t\t\t|\r\n");
             textBoxOut.Text += ("| · Открыть файл с кодировкой\t| -open [path / number] [page_code]\t|\r\n");
+            textBoxOut.Text += ("| · Редактировать файл\t\t| -edit [path / number]\t\t|\r\n");
+            textBoxOut.Text += ("| · Редактировать файл (кодировка)\t| -edit [path / number] [page_code]\t|\r\n");
             textBoxOut.Text += ("| · Перейти к текущему каталогу\t| -cur\t\t\t\t|\r\n");
             textBoxOut.Text += ("| · Перейти к корневой папке\t| -top\t\t\t\t|\r\n");
             textBoxOut.Text += ("| · Справка\t\t\t| -info\t\t\t\t|\r\n");
@@ -45,6 +47,8 @@ namespace WindowsFormsApp2
 
         public static void FileList(string path, TextBox textBoxOut) //выводит список файлов в директории
         {
+            textBoxOut.ReadOnly = true;
+
             dirIndex = 0;
             textBoxOut.Text += ($"\r\n>>>\t{path}\t<<<\r\n");
             DirectoryInfo dInfo = new DirectoryInfo(path);
@@ -117,6 +121,45 @@ namespace WindowsFormsApp2
                     {
                         Open(textBoxOut, -1, Directory.GetCurrentDirectory());
                         return;
+                    }
+                    else if (command.StartsWith("-edit"))
+                    {
+                        string[] tmp = command.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (Convert.ToInt32(tmp[1]) <= dirIndex && Convert.ToInt32(tmp[1]) > 0)
+                        {
+                            if (tmp.Length > 2) //если задана кодировка
+                            {
+                                try //если задан файл числом
+                                {
+                                    Form1.encodingPage = tmp[2];
+                                    EditFile(textBoxOut, Convert.ToInt32(tmp[1]) - 1, null, Form1.encodingPage);
+                                }
+                                catch //если задан путь
+                                {
+                                    Form1.encodingPage = tmp[2];
+                                    EditFile(textBoxOut, -1, tmp[1], Form1.encodingPage);
+                                }
+                                return;
+                            }
+                            else //если кодировка не задана
+                            {
+                                try //если задан файл числом
+                                {
+                                    EditFile(textBoxOut, Convert.ToInt32(tmp[1]) - 1, null, Form1.encodingPage);
+                                }
+                                catch //если задан путь
+                                {
+                                    EditFile(textBoxOut, -1, tmp[1], Form1.encodingPage);
+                                }
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            textBoxOut.Text += ("\r\nОшибка. Попробуйте снова.");
+                            FileList(PathLinker(pathIndex), textBoxOut);
+                            return;
+                        }
                     }
                     else if (command.StartsWith("-info"))
                     {
@@ -566,6 +609,105 @@ namespace WindowsFormsApp2
             {
                 textBoxOut.Text += ($"\r\n");
                 foreach (var nd in e.Nodes()) OpenXML(textBoxOut, nd);
+            }
+        }
+
+        private static void EditFile(TextBox textBoxOut, int num = -1, string p = @"C:", string codePage = "65001") //Открывает файлы для редактирования
+        {
+            if (num != -1) //открытие файла по числу
+            {
+                try
+                {
+                    path[++pathIndex] = dirList[num];
+                    textBoxOut.Text += ($"\r\nОткрытие {PathLinker(pathIndex)}...");
+
+                    // проверяем на поддерживаемый файл для открытия
+                    if (path[pathIndex].ToLower().EndsWith(".txt"))
+                    {
+                        textBoxOut.ReadOnly = false;
+                        string fileName = PathLinker(pathIndex);
+                        try // если кодировка задана текстом
+                        { 
+                            StreamReader fStr = new StreamReader(fileName.Remove(fileName.Length - 1), Encoding.GetEncoding(codePage));
+                            textBoxOut.Text = fStr.ReadToEnd();
+                            fStr.Close();
+                        }
+                        catch // если кодировка задана числом
+                        { 
+                            StreamReader fStr = new StreamReader(fileName.Remove(fileName.Length - 1), Encoding.GetEncoding(Convert.ToInt32(codePage)));
+                            textBoxOut.Text = fStr.ReadToEnd();
+                            fStr.Close();
+                        }
+                        --pathIndex;
+                    }
+                    else
+                    {
+                        --pathIndex;
+                        textBoxOut.Text += ($"\r\nОшибка: невозможно открыть для редактирования {PathLinker(pathIndex)}");
+                        FileList(PathLinker(pathIndex), textBoxOut);
+                    }
+                }
+                catch
+                {
+                    textBoxOut.Text += ($"\r\nОшибка: невозможно открыть для редактирования {PathLinker(pathIndex)}");
+                    --pathIndex;
+                    FileList(PathLinker(pathIndex), textBoxOut);
+                }
+            }
+            else //открытие файла по пути
+            {
+                try
+                {
+                    // сделать резервную копию "path[]" и "pathIndex" на случай ошибки открытия
+                    pathBackup = path;
+                    pathIndexBackup = pathIndex;
+                    // разделить путь "р" на состовляющие и узнать новый "pathIndex"
+                    // записать поверх путь из "р" в "path[]"
+                    path = new string[1000];
+                    int tempIndex = 0;
+                    string[] temp = p.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
+                    pathIndex = temp.Length - 1;
+                    foreach (string s in temp)
+                    {
+                        path[tempIndex++] = s;
+                    }
+
+                    textBoxOut.Text += ($"\r\nОткрытие {PathLinker(pathIndex)}...");
+
+                    // проверяем на поддерживаемый файл для открытия
+                    if (path[pathIndex].ToLower().EndsWith(".txt"))
+                    {
+                        textBoxOut.ReadOnly = false;
+                        string fileName = PathLinker(pathIndex);
+                        try // если кодировка задана текстом
+                        { 
+                            StreamReader fStr = new StreamReader(fileName.Remove(fileName.Length - 1), Encoding.GetEncoding(codePage));
+                            textBoxOut.Text = fStr.ReadToEnd();
+                            fStr.Close();
+                        }
+                        catch // если кодировка задана числом
+                        { 
+                            StreamReader fStr = new StreamReader(fileName.Remove(fileName.Length - 1), Encoding.GetEncoding(Convert.ToInt32(codePage)));
+                            textBoxOut.Text = fStr.ReadToEnd();
+                            fStr.Close();
+                        }
+                        path = pathBackup;
+                        pathIndex = pathIndexBackup;
+                        return;
+                    }
+                    else
+                    {
+                        textBoxOut.Text += ($"\r\nОшибка: невозможно открыть для редактирования {p}");
+                        FileList(PathLinker(pathIndex), textBoxOut);
+                    }
+                }
+                catch
+                {
+                    textBoxOut.Text += ($"\r\nОшибка: невозможно открыть для редактирования {p}");
+                    path = pathBackup;
+                    pathIndex = pathIndexBackup;
+                    FileList(PathLinker(pathIndex), textBoxOut);
+                }
             }
         }
 

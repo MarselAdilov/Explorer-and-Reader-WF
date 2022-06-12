@@ -40,6 +40,7 @@ namespace WindowsFormsApp2
         {
             if (e.KeyChar == Convert.ToChar(Keys.Return))
             {
+                e.Handled = true; // убираем системный звук при нажатии Enter
                 buttonRun_Click(sender, e);
             }
         }
@@ -88,13 +89,13 @@ namespace WindowsFormsApp2
 
         private void openFile(object sender, EventArgs e)
         {
-            textBoxOut.ReadOnly = false;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = Environment.CurrentDirectory;
             openFileDialog.Filter = "Текстовые файлы (*.txt)|*.txt|" + "Все файлы (*.*)|*.*";
             openFileDialog.RestoreDirectory = true;
             if (openFileDialog.ShowDialog(this) == DialogResult.OK)
             {
+                textBoxOut.ReadOnly = false;
                 FileName = openFileDialog.FileName;
                 encodingPage = (string)code.Items[code.SelectedIndex];
                 StreamReader fStr = new StreamReader(FileName, Encoding.GetEncoding(encodingPage));
