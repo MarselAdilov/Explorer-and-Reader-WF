@@ -20,7 +20,7 @@ namespace WindowsFormsApp2
 
         public static string[] path = new string[1000]; // хранит путь поэлементно
         private static string[] pathBackup = new string[1000]; // копия path на случай ошибки, дающая возможность отката
-        private static int pathIndex = 0; // хранит кол-во объектов в пути
+        public static int pathIndex = 0; // хранит кол-во объектов в пути
         private static int pathIndexBackup = 0; // копия pathIndex на случай ошибки, дающая возможность отката
         private static string[] dirList; // хранит список файлов в текущем каталоге
         private static int dirIndex = 0; // кол-во файлов в текущем каталоге
@@ -43,7 +43,7 @@ namespace WindowsFormsApp2
             FileList(PathLinker(pathIndex), textBoxOut);
         }
 
-        private static void FileList(string path, TextBox textBoxOut) //выводит список файлов в директории
+        public static void FileList(string path, TextBox textBoxOut) //выводит список файлов в директории
         {
             dirIndex = 0;
             textBoxOut.Text += ($"\r\n>>>\t{path}\t<<<\r\n");
@@ -69,7 +69,7 @@ namespace WindowsFormsApp2
             textBoxOut.Text += ("\r\n<Введите номер или команду>");
         }
 
-        private static string PathLinker(int i) //собирает путь воедино
+        public static string PathLinker(int i) //собирает путь воедино
         {
             string pathLinked = "";
             for (int j = 0; j <= i; j++) pathLinked = pathLinked + path[j] + @"\";

@@ -119,7 +119,15 @@ namespace WindowsFormsApp2
 
         private void exit(object sender, EventArgs e)
         {
+            textBoxOut.ReadOnly = true;
             this.Close();
+        }
+
+        private void openFileList(object sender, EventArgs e)
+        {
+            textBoxOut.ReadOnly = true;
+            textBoxOut.Text = String.Empty;
+            Program.FileList(Program.PathLinker(Program.pathIndex), textBoxOut);
         }
     }
 }
