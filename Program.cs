@@ -1,23 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text;
 using System.IO;
-using System.Globalization;
 using System.Xml.Linq;
 using System.Xml;
-using System.Threading;
 
 namespace WindowsFormsApp2
 {
     internal class Program
     {
-        /// <summary>
-        /// Главная точка входа для приложения.
-        /// </summary>
-
         public static string[] path = new string[1000]; // хранит путь поэлементно
         private static string[] pathBackup = new string[1000]; // копия path на случай ошибки, дающая возможность отката
         public static int pathIndex = 0; // хранит кол-во объектов в пути

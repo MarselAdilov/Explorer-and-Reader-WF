@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Globalization;
-using System.Xml.Linq;
-using System.Xml;
-using System.Threading;
 
 namespace WindowsFormsApp2
 {
@@ -119,7 +112,7 @@ namespace WindowsFormsApp2
                 fStr.Write(textBoxOut.Text);
                 fStr.Close();
             }
-            catch (Exception ex) { }
+            catch { }
         }
 
         private void exit(object sender, EventArgs e)
