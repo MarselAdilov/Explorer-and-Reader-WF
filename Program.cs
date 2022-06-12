@@ -306,7 +306,7 @@ namespace WindowsFormsApp2
             string[] fFormat = fName.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
             string filePath = PathLinker(pathIndex).TrimEnd('\\');
             // страница 1251 имеет имя "windows-1251", а страница 866 – "cp866" и, соответственно, 65001 – "UTF-8".
-            textBoxOut.Text += ($"\r\n\n>>>\tФайл: {fName}\t|\tКодировка: {codePage}\t<<<\n");
+            textBoxOut.Text += ($"\r\n\n>>>\tФайл: {fName}\t|\tКодировка: {codePage}\t<<<\r\n");
             try
             {
                 switch (fFormat.Last())
@@ -622,7 +622,12 @@ namespace WindowsFormsApp2
                     textBoxOut.Text += ($"\r\nОткрытие {PathLinker(pathIndex)}...");
 
                     // проверяем на поддерживаемый файл для открытия
-                    if (path[pathIndex].ToLower().EndsWith(".txt"))
+                    if (path[pathIndex].ToLower().EndsWith(".txt") ||
+                        path[pathIndex].ToLower().EndsWith(".log") ||
+                        path[pathIndex].ToLower().EndsWith(".md") ||
+                        path[pathIndex].ToLower().EndsWith(".cs") ||
+                        path[pathIndex].ToLower().EndsWith(".c") ||
+                        path[pathIndex].ToLower().EndsWith(".cpp"))
                     {
                         textBoxOut.ReadOnly = false;
                         string fileName = PathLinker(pathIndex);
@@ -675,7 +680,12 @@ namespace WindowsFormsApp2
                     textBoxOut.Text += ($"\r\nОткрытие {PathLinker(pathIndex)}...");
 
                     // проверяем на поддерживаемый файл для открытия
-                    if (path[pathIndex].ToLower().EndsWith(".txt"))
+                    if (path[pathIndex].ToLower().EndsWith(".txt") ||
+                        path[pathIndex].ToLower().EndsWith(".log") ||
+                        path[pathIndex].ToLower().EndsWith(".md") ||
+                        path[pathIndex].ToLower().EndsWith(".cs") ||
+                        path[pathIndex].ToLower().EndsWith(".c") ||
+                        path[pathIndex].ToLower().EndsWith(".cpp"))
                     {
                         textBoxOut.ReadOnly = false;
                         string fileName = PathLinker(pathIndex);

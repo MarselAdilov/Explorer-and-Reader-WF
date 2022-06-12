@@ -108,14 +108,18 @@ namespace WindowsFormsApp2
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog(); 
             saveFileDialog.Filter = "Текстовые файлы (*.txt)|*.txt|" + "Все файлы (*.*)|*.*";
-            if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
+            try
             {
-                FileName = saveFileDialog.FileName;
+                if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    FileName = saveFileDialog.FileName;
+                }
+                encodingPage = (string)code.Items[code.SelectedIndex];
+                StreamWriter fStr = new StreamWriter(FileName, false, Encoding.GetEncoding(encodingPage));
+                fStr.Write(textBoxOut.Text);
+                fStr.Close();
             }
-            encodingPage = (string)code.Items[code.SelectedIndex];
-            StreamWriter fStr = new StreamWriter(FileName, false, Encoding.GetEncoding(encodingPage));
-            fStr.Write(textBoxOut.Text);
-            fStr.Close();
+            catch (Exception ex) { }
         }
 
         private void exit(object sender, EventArgs e)
